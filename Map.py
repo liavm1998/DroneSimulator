@@ -1,27 +1,69 @@
-from PIL import Image
+from PIL import Image,ImageDraw
+
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+YELLOW = (255, 255, 0)
+
 
 class Map:
-    def __init__(self, image_path, pixel_size=2.5):
+    def __init__(self,image_path, pixel_size=2.5):
         self.image_path = image_path
-        self.pixel_size = pixel_size  # cm per pixel
-        self.pixels_map = self._create_pixels_map()
+        self.pixel_map = self._create_pixel_map()
+        self.pixel_size=pixel_size
 
-    def _create_pixels_map(self):
-        image = Image.open(self.image_path)
-        grayscale_image = image.convert('L')
-        pixels_map = []
-        for y in range(grayscale_image.height):
+    def _create_pixel_map(self):
+        image = Image.open(self.image_path).convert('RGB')
+        width, height = image.size
+        pixel_map = []
+
+        for y in range(height):
             row = []
-            for x in range(grayscale_image.width):
-                row.append(grayscale_image.getpixel((x, y)))
-            pixels_map.append(row)
-        return pixels_map
+            for x in range(width):
+                r, g, b = image.getpixel((x, y))
+                if (r, g, b) == WHITE:
+                    row.append('passage')
+                elif (r, g, b) == BLACK:
+                    row.append('wall')
+                else:
+                    row.append('unknown')
+            pixel_map.append(row)
 
-    def get_pixels_map(self):
-        return self.pixels_map
+        return pixel_map
 
-    def get_pixel_value(self, x, y):
-        return self.pixels_map[y][x]
+    def display_pixel_map(self):
+        for row in self.pixel_map:
+            print(' '.join(row))
+        
 
-    def is_wall(self, x, y):
-        return self.get_pixel_value(x, y) == 0
+    def save_pixel_map_to_file(self, output_path,pixel_size=2):
+        # Determine the dimensions of the new image based on the pixel_map size
+        width = len(self.pixel_map[0]) * pixel_size
+        height = len(self.pixel_map) * pixel_size
+        
+        # Create a new image with the calculated dimensions
+        new_image = Image.new("RGB", (width, height))
+        draw = ImageDraw.Draw(new_image)
+
+        print("memory issue bro")
+        # Paint the map based on the pixel_map
+        for y, row in enumerate(self.pixel_map):
+            for x, pixel_type in enumerate(row):
+                if pixel_type == 'wall':
+                    draw.rectangle([(x * pixel_size, y * pixel_size), ((x + 1) * pixel_size, (y + 1) * pixel_size)],
+                                   fill=BLACK)
+                elif pixel_type == 'passage':
+                    draw.rectangle([(x * pixel_size, y * pixel_size), ((x + 1) * pixel_size, (y + 1) * pixel_size)],
+                                   fill=WHITE)
+                elif pixel_type == 'painted':
+                    print('suppose to be happy nigga')
+                    draw.rectangle([( x * pixel_size, y * pixel_size), ((x + 1) * pixel_size, (y + 1) * pixel_size)],
+                                   fill=YELLOW)
+
+        # Save the new image as PNG or JPEG based on the output_path extension
+        if output_path.lower().endswith('.png'):
+            new_image.save(output_path, "PNG")
+        elif output_path.lower().endswith('.jpg') or output_path.lower().endswith('.jpeg'):
+            new_image.save(output_path, "JPEG")
+        else:
+            raise ValueError("Unsupported file format. Please provide a path with '.png', '.jpg', or '.jpeg' extension.")
+
