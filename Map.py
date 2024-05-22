@@ -1,5 +1,5 @@
 from PIL import Image,ImageDraw
-
+import random
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
@@ -67,3 +67,7 @@ class Map:
         else:
             raise ValueError("Unsupported file format. Please provide a path with '.png', '.jpg', or '.jpeg' extension.")
 
+
+    def get_random_white_pixel(self):
+        white_pixels = [(x, y) for y, row in enumerate(self.pixel_map) for x, pixel in enumerate(row) if pixel == 'passage']
+        return random.choice(white_pixels)

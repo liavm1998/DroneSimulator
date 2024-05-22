@@ -2,10 +2,12 @@ import numpy as np
 import SensorSimulator
 
 class Drone:
-    def __init__(self, input_map, start_x, start_y):
+    def __init__(self, input_map, start_x=- 1, start_y=-1):
         self.map = input_map
         self.x = start_x
         self.y = start_y
+        if start_x<0 or start_y <0 :
+            self.x, self.y = self.map.get_random_white_pixel()
         self.battery = 480  # max flight time in seconds
         self.speed = 0  # current speed in m/s
         self.orientation = 0  # angle in degrees
