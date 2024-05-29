@@ -55,7 +55,6 @@ class Map:
                     draw.rectangle([(x * pixel_size, y * pixel_size), ((x + 1) * pixel_size, (y + 1) * pixel_size)],
                                    fill=WHITE)
                 elif pixel_type == 'painted':
-                    print('suppose to be happy nigga')
                     draw.rectangle([( x * pixel_size, y * pixel_size), ((x + 1) * pixel_size, (y + 1) * pixel_size)],
                                    fill=YELLOW)
 

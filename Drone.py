@@ -2,6 +2,9 @@ import numpy as np
 import SensorSimulator
 
 class Drone:
+    map = -1
+    x = -1
+    y = -1
     def __init__(self, input_map, start_x=- 1, start_y=-1):
         self.map = input_map
         self.x = start_x
@@ -13,6 +16,7 @@ class Drone:
         self.orientation = 0  # angle in degrees
         self.altitude = 0  # height in meters
         self.sensor_simulator = SensorSimulator.SensorSimulator(self, input_map)
+
 
     def move(self, pitch=0, roll=0, duration=1):
         # Update orientation based on pitch and roll

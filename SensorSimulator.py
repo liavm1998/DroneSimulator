@@ -38,7 +38,7 @@ class SensorSimulator:
                 self.map.pixel_map[y][x] = 'painted'  # Paint the passage yellow
                 return pixel_distance  # Wall detected
             elif self.map.pixel_map[y][x] == 'passage':
-                print('painted')
+                print(f'painted')
                 self.map.pixel_map[y][x] = 'painted'  # Paint the passage yellow
 
         return pixel_max_distance  # No wall detected within max distance
