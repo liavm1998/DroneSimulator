@@ -70,3 +70,13 @@ class Map:
     def get_random_white_pixel(self):
         white_pixels = [(x, y) for y, row in enumerate(self.pixel_map) for x, pixel in enumerate(row) if pixel == 'passage']
         return random.choice(white_pixels)
+    
+    def random_white_pixel(self):
+        start_height = int(0.25 * len(self.pixel_map))
+        start_width = int(0.25 * len(self.pixel_map[0]))
+        end_height = int(0.75 *len(self.pixel_map))
+        end_width = int(0.75 *len(self.pixel_map[0]))
+        for i in range(start_height,end_height):
+            for j in range(start_width,end_width):
+                if(self.pixel_map[i][j] == 'passage'):
+                    return i,j

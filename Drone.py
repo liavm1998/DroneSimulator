@@ -12,7 +12,7 @@ class Drone:
         if start_x<0 or start_y <0 :
             self.x, self.y = self.map.get_random_white_pixel()
         self.battery = 480  # max flight time in seconds
-        self.speed = 0  # current speed in m/s
+        self.speed = 10  # current speed in m/s
         self.orientation = 0  # angle in degrees
         self.altitude = 0  # height in meters
         self.sensor_simulator = SensorSimulator.SensorSimulator(self, input_map)
@@ -25,7 +25,7 @@ class Drone:
 
         # Update speed based on pitch
         self.speed += pitch * duration
-        self.speed = min(max(self.speed, 0), 3)  # limit speed between 0 and 3 m/s
+        self.speed = min(max(self.speed, 0), 30)  # limit speed between 0 and 3 m/s
 
         # Update position based on speed and orientation
         rad_orientation = np.radians(self.orientation)

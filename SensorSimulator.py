@@ -8,7 +8,7 @@ class SensorSimulator:
 
     def get_distance_sensor_data(self, direction):
         # Simulate distance with a typical error of ±2%
-        max_distance = 3.0  # in meters
+        max_distance = 300  # in meters
         pixel_max_distance = max_distance / self.map.pixel_size  # convert to pixels
         error_factor = random.uniform(0.98, 1.02)
         
@@ -34,12 +34,11 @@ class SensorSimulator:
             if x < 0 or x >= len(self.map.pixel_map[0]) or y < 0 or y >= len(self.map.pixel_map):
                 return pixel_distance  # Edge of the map
             if self.map.pixel_map[y][x] == 'wall':
-                print('was in wall but painted')
                 self.map.pixel_map[y][x] = 'painted'  # Paint the passage yellow
                 return pixel_distance  # Wall detected
             elif self.map.pixel_map[y][x] == 'passage':
-                print(f'painted')
                 self.map.pixel_map[y][x] = 'painted'  # Paint the passage yellow
+                print(f'painted {y,x} at sensor simulator')
 
         return pixel_max_distance  # No wall detected within max distance
 

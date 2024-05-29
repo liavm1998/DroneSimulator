@@ -9,7 +9,7 @@ import sys
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-YELLOW = (255, 255, 0)
+YELLOW = (255, 225, 0)
 RED = (255, 0, 0)  # Color for the drone
 
 def draw_map(screen, map_obj, drone, scale):
@@ -42,7 +42,8 @@ def main():
     map_obj = Map(image_path)
 
     # Create the Drone object with a random starting position
-    drone = Drone(map_obj, 50, 68)
+    i, j = map_obj.get_random_white_pixel()
+    drone = Drone(map_obj, i, j)
 
     #apply logic to the drone
     logic = ControllerLogic(drone)
@@ -75,7 +76,7 @@ def main():
                 running = False
 
         # Move the drone (for testing purposes, you can update pitch and roll as needed)
-        drone.move(pitch=0.1, roll=0, duration=1)  # Update these values for your test
+        # drone.move(pitch=0.1, roll=0, duration=1)  # Update these values for your test
 
         # print("x: ", drone.x)
         # print("y: ", drone.y)
