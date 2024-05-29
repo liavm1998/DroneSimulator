@@ -4,6 +4,8 @@ import threading
 from Map import Map
 from Drone import Drone
 from ControllerLogic import ControllerLogic
+import sys
+
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -13,18 +15,9 @@ RED = (255, 0, 0)  # Color for the drone
 def draw_map(screen, map_obj, drone, scale):
     for y, row in enumerate(map_obj.pixel_map):
         for x, pixel_type in enumerate(row):
-            color = None
-            if pixel_type == 'wall':
-                color = BLACK    
-            elif pixel_type == 'passage':
-                color = WHITE
-            else:
-                color = YELLOW
-                
-
+            color = BLACK if pixel_type == 'wall' else WHITE if pixel_type == 'passage' else YELLOW
             rect = pygame.Rect(x * scale, y * scale, scale, scale)
             pygame.draw.rect(screen, color, rect)
-            
     
     # Draw the drone as a navigation arrow
     drone_x = int(drone.x * scale)
@@ -45,18 +38,15 @@ def draw_map(screen, map_obj, drone, scale):
 def main():
     pygame.init()
 
-    image_path = 'maps/p11.png'
+    image_path = sys.argv[1]
     map_obj = Map(image_path)
 
     # Create the Drone object with a random starting position
-    drone = Drone(map_obj)
+    drone = Drone(map_obj, 50, 68)
 
     #apply logic to the drone
     logic = ControllerLogic(drone)
     
-    # thread = threading.Thread(target=logic.explore_and_return)
-    # thread.start()
-
     # Calculate the map dimensions
     map_width = len(map_obj.pixel_map[0]) * map_obj.pixel_size
     map_height = len(map_obj.pixel_map) * map_obj.pixel_size
@@ -75,17 +65,21 @@ def main():
     height = int(len(map_obj.pixel_map) * scale)
     screen = pygame.display.set_mode((width, height))
 
-    pygame.display.set_caption('Map Display')
+    pygame.display.set_caption('Drone Simulator')
 
     clock = pygame.time.Clock()
     running = True
     while running:
-        print(f'speed is {drone.speed}')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
         # Move the drone (for testing purposes, you can update pitch and roll as needed)
+        drone.move(pitch=0.1, roll=0, duration=1)  # Update these values for your test
+
+        # print("x: ", drone.x)
+        # print("y: ", drone.y)
+        print(drone.sensor_simulator.get_sensor_data())
         logic.explore_and_return()
         screen.fill(WHITE)
         draw_map(screen, map_obj, drone, scale)
