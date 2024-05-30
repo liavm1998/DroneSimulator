@@ -8,7 +8,7 @@ class SensorSimulator:
 
     def get_distance_sensor_data(self, direction):
         # Simulate distance with a typical error of ±2%
-        max_distance = 300  # in meters
+        max_distance = 300  # in m
         pixel_max_distance = max_distance / self.map.pixel_size  # convert to pixels
         error_factor = random.uniform(0.98, 1.02)
         
@@ -18,27 +18,19 @@ class SensorSimulator:
 
     def _detect_wall_in_direction(self, direction, pixel_max_distance):
         # Detect wall in the given direction and return the distance to the wall in pixels
-        dx, dy = 0, 0
-        if direction == 'left':
-            dx = -1
-        elif direction == 'right':
-            dx = 1
-        elif direction == 'forward':
-            dy = -1
-        elif direction == 'backward':
-            dy = 1
-
+        dx, dy = direction
+        x , y = self.drone.x , self.drone.y
         for pixel_distance in range(int(pixel_max_distance)):
-            x = int(self.drone.x + dx * pixel_distance)
-            y = int(self.drone.y + dy * pixel_distance)
+            x = int(x + dx * pixel_distance)
+            y = int(y + dy * pixel_distance)
             if x < 0 or x >= len(self.map.pixel_map[0]) or y < 0 or y >= len(self.map.pixel_map):
                 return pixel_distance  # Edge of the map
-            if self.map.pixel_map[y][x] == 'wall':
-                self.map.pixel_map[y][x] = 'painted'  # Paint the passage yellow
+            
+            elif self.map.pixel_map[y][x] == 'wall':
                 return pixel_distance  # Wall detected
+            
             elif self.map.pixel_map[y][x] == 'passage':
                 self.map.pixel_map[y][x] = 'painted'  # Paint the passage yellow
-                print(f'painted {y,x} at sensor simulator')
 
         return pixel_max_distance  # No wall detected within max distance
 
@@ -56,10 +48,10 @@ class SensorSimulator:
 
     def get_sensor_data(self):
         distance_sensors = {
-            'left': self.get_distance_sensor_data('left'),
-            'right': self.get_distance_sensor_data('right'),
-            'forward': self.get_distance_sensor_data('forward'),
-            'backward': self.get_distance_sensor_data('backward')
+            'left': self.get_distance_sensor_data((-1,0)),
+            'right': self.get_distance_sensor_data((1,0)),
+            'forward': self.get_distance_sensor_data((0,1)),
+            'backward': self.get_distance_sensor_data((0,-1))
         }
         speed = self.get_speed_sensor_data()
         orientation = self.get_imu_data()

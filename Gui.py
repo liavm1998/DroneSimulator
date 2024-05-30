@@ -81,7 +81,7 @@ def main():
         # print("x: ", drone.x)
         # print("y: ", drone.y)
         print(drone.sensor_simulator.get_sensor_data())
-        logic.explore_and_return()
+        logic.explore_map()
         screen.fill(WHITE)
         draw_map(screen, map_obj, drone, scale)
         pygame.display.flip()
