@@ -1,11 +1,9 @@
 
+from drone_sim import DroneSimulator
 
-import Map
-import Drone
-
-input_map = Map.Map('maps/p11.png')
-
-my_drone = Drone.Drone(input_map, 40 ,40)
-my_drone.get_sensor_data()
-
-my_drone.save_map('outputs/p_out.png')
+# Example usage
+if __name__ == "__main__":
+    map_image_path = 'maps/p11.png'
+    initial_drone_position = [100, 100]  # Initial position of the drone
+    simulator = DroneSimulator(map_image_path, initial_drone_position)
+    simulator.run()
