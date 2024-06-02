@@ -28,8 +28,9 @@ class Drone:
             distance = 0
             if direction == 'up':
                 for i in range(drone_y - 1, -1, -1):  # Scan upwards
-                    while map_array[i, drone_x] != 'W':
-                        distance += 1
+                    if map_array[i, drone_x] != 'W':
+                        break    
+                    distance += 1
                     
             elif direction == 'down':
                 for i in range(drone_y + 1, len(map_array)):  # Scan downwards
@@ -55,9 +56,9 @@ class Drone:
                 delta_time = time.time() - self.last_update_time
                 self.speed = min(self.speed + self.acceleration * delta_time, self.max_speed)
                 distance_moved = self.speed * delta_time
+                # TODO calculate direction with PID control
                 delta_x = distance_moved * np.cos(np.radians(self.orientation))
                 delta_y = distance_moved * np.sin(np.radians(self.orientation))
-                print(f'delta_x: {delta_x}, delta_y: {delta_y}')
                 self.position[0] += delta_x
                 self.position[1] += delta_y
                 self.last_update_time = time.time()

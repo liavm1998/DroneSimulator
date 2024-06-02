@@ -31,7 +31,8 @@ class DroneSimulator:
             screen.fill((255, 255, 255))  # White background
             for y in range(len(self.map.map)):
                 for x in range(len(self.map.map[0])):
-                    color = (0, 0, 0) if self.map.map[y][x] == 'W' else (255, 255, 255)
+                    color = (0, 0, 0) if self.map.map[y][x] == 'W' else ((255, 255, 255) if self.map.map[y][x] == 'P' else (255, 255, 0))
+
                     pygame.draw.rect(screen, color, (x, y, 1, 1))
 
             # Draw drone (for now, just a red circle at its position)
