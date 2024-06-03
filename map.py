@@ -19,7 +19,6 @@ class Map:
         self.image = img
         # Get image dimensions
         width, height = img.size
-        print(f'map2 height:{height},map2 width:{width}')    
         # Initialize map representation with an empty array
         map_data = np.full((height, width), ' ', dtype='<U1')
 
@@ -34,7 +33,9 @@ class Map:
                 elif (r, g, b) == (255, 255, 255):
                     map_data[y, x] = 'P'  # Passage
                 elif (r, g, b) == (255, 255, 0):
-                    map_data[y, x] = 'L'  # Location visited
+                    map_data[y, x] = 'S'  # Location scanned
+                elif (r, g, b) == (255, 255, 0):
+                    map_data[y, x] = 'V'  # Location visited
 
         return map_data
 
@@ -71,14 +72,6 @@ class Map:
         Set the type of the pixel at (x, y).
         pixel_type should be 'wall', 'passage', or 'visited'.
         """
-        if not self.map:
+        if self.map is not None:
             return
-        if pixel_type == 'wall':
-            color = (0, 0, 0)
-        elif pixel_type == 'passage':
-            color = (255, 255, 255)
-        elif pixel_type == 'visited':
-            color = (255, 255, 0)
-        else:
-            return
-        self.map.putpixel((x, y), color)
+        self.map[x][y] = pixel_type

@@ -25,14 +25,15 @@ class DroneSimulator:
 
             # Update drone sensors based on the current map
             visited_dir = self.drone.update_sensors(self.map.map)
+            self.map.set_pixel(round(self.drone.position[0]),round(self.drone.position[1]),'V')
             #TODO need logic to draw visited_dirs in yellow here
             self.drone.fly()
+            
             # Draw map
             screen.fill((255, 255, 255))  # White background
             for y in range(len(self.map.map)):
                 for x in range(len(self.map.map[0])):
-                    color = (0, 0, 0) if self.map.map[y][x] == 'W' else ((255, 255, 255) if self.map.map[y][x] == 'P' else (255, 255, 0))
-
+                    color = (0, 0, 0) if self.map.map[y][x] == 'W' else ((255, 255, 255) if self.map.map[y][x] == 'P' else (255, 255, 0) if self.map.map[y][x] == 'S' else (0,0,255)) 
                     pygame.draw.rect(screen, color, (x, y, 1, 1))
 
             # Draw drone (for now, just a red circle at its position)
@@ -41,4 +42,5 @@ class DroneSimulator:
 
             pygame.display.flip()
 
-        pygame.quit()
+        
+        # pygame.quit()
