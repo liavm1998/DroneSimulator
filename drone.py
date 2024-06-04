@@ -29,6 +29,7 @@ class Drone:
         self.orientation = 0  # in degrees
         self.battery = 100  # in percentage
         self.max_flight_time = 8 * 60  # in seconds
+        self.start_time = time.time()
         self.last_update_time = time.time()
 
         # PID controller parameters
@@ -100,7 +101,7 @@ class Drone:
         self.orientation =  self.orientation % 360
     
     def fly(self):
-        if self.battery > 0:
+        if self.battery > 0 and time.time() - self.start_time < self.max_flight_time:
             # Calculate the control signal
             if self.distance_sensors['up'] == 3:
                 print('integral should be 0')
