@@ -4,6 +4,7 @@ auto robots course second assignment
 ## ex1
 <h6>submitters</h6>
 <p>name:liav levi ID:206603193</p>
+<p>name:Barak Sharabi ID:315533356</p>
 <p>name:oria tzadok ID:315500157</p>
 <p>name:sagi yosef azulai ID:207544230</p>
 
